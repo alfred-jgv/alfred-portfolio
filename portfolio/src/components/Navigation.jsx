@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Mail, Briefcase, Folder, BookOpen, User, Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Navigation = ({ activeSection, scrollToSection, isVisible }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -49,7 +50,7 @@ const Navigation = ({ activeSection, scrollToSection, isVisible }) => {
           <div className="flex items-center justify-between">
             {/* Name/Logo - Only show on larger screens */}
             <div className={`text-xl sm:text-2xl font-extralight tracking-wide transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'} hidden md:block`}>
-              JGV
+              Jan Alfred G. Violanta
             </div>
             
             {/* Desktop Navigation - Icons with labels */}
@@ -73,21 +74,22 @@ const Navigation = ({ activeSection, scrollToSection, isVisible }) => {
               ))}
             </div>
             
-            {/* Mobile Navigation - Icons only */}
-            <div className="flex md:hidden space-x-2">
-              {navItems.slice(0, 3).map(({ id, icon: Icon }) => (
+            {/* Mobile Navigation - Icons only with all items */}
+            <div className="flex md:hidden space-x-1">
+              {navItems.map(({ id, icon: Icon }) => (
                 <button
                   key={id}
                   onClick={() => scrollToSection(id)}
                   className={`p-2 rounded-full transition-all duration-300 ${
                     activeSection === id ? 'text-stone-900 bg-stone-100' : 'text-stone-600 hover:text-stone-800'
                   }`}
+                  aria-label={id}
                 >
                   <Icon size={18} />
                 </button>
               ))}
               
-              {/* Mobile menu button */}
+              {/* Mobile menu button for additional options if needed */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="p-2 rounded-full text-stone-600 hover:text-stone-800 hover:bg-stone-100 transition-all duration-300"
@@ -100,44 +102,65 @@ const Navigation = ({ activeSection, scrollToSection, isVisible }) => {
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
-      {isMobileMenuOpen && (
-        <>
-          <div 
-            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden"
-            onClick={() => setIsMobileMenuOpen(false)}
-          />
-          
-          <div className={`fixed top-0 right-0 h-full w-64 bg-white/95 backdrop-blur-md z-50 shadow-xl transform transition-transform duration-300 ease-in-out md:hidden ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-            <div className="p-6 border-b border-stone-200">
-              <div className="text-xl font-extralight tracking-wide">
-                Jan Alfred G. Violanta
-              </div>
-            </div>
+      {/* Mobile Menu Overlay with Animation */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden"
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
             
-            <div className="p-4 space-y-2">
-              {navItems.map(({ id, label, icon: Icon }) => (
+            <motion.div 
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed top-0 right-0 h-full w-72 bg-white/95 backdrop-blur-md z-50 shadow-xl md:hidden"
+            >
+              <div className="p-6 border-b border-stone-200 flex justify-between items-center">
+                <div className="text-xl font-extralight tracking-wide">
+                  Jan Alfred G. Violanta
+                </div>
                 <button
-                  key={id}
-                  onClick={() => handleNavClick(id)}
-                  className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
-                    activeSection === id ? 'bg-stone-100 text-stone-900' : 'text-stone-600 hover:bg-stone-50'
-                  }`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="p-2 rounded-full text-stone-600 hover:text-stone-800 hover:bg-stone-100 transition-all duration-300"
+                  aria-label="Close menu"
                 >
-                  <Icon size={18} />
-                  <span className="font-light">{label}</span>
+                  <X size={20} />
                 </button>
-              ))}
-            </div>
-            
-            <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-stone-200">
-              <div className="text-xs text-stone-500 text-center">
-                © {new Date().getFullYear()} Jan Alfred G. Violanta
               </div>
-            </div>
-          </div>
-        </>
-      )}
+              
+              <div className="p-4 space-y-2">
+                {navItems.map(({ id, label, icon: Icon }) => (
+                  <motion.button
+                    key={id}
+                    onClick={() => handleNavClick(id)}
+                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                      activeSection === id ? 'bg-stone-100 text-stone-900' : 'text-stone-600 hover:bg-stone-50'
+                    }`}
+                    whileHover={{ x: 5 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <Icon size={18} />
+                    <span className="font-light">{label}</span>
+                  </motion.button>
+                ))}
+              </div>
+              
+              <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-stone-200">
+                <div className="text-xs text-stone-500 text-center">
+                  © {new Date().getFullYear()} Jan Alfred G. Violanta
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </>
   );
 };

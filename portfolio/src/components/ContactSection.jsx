@@ -38,7 +38,7 @@ const ContactSection = () => {
                 <Mail size={20} />
               </div>
               <a
-                href="mailto:violantajanalfredg@gmail.com"
+                href="mailto:violantajanalfred40@gmail.com"
                 className="hover:text-stone-900 transition-colors break-all"
               >
                 violantajanalfred40@gmail.com
@@ -71,7 +71,7 @@ const ContactSection = () => {
                 hidden: {},
                 visible: { transition: { staggerChildren: 0.15 } },
               }}
-              className="flex justify-center space-x-4 sm:space-x-6"
+              className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-6"
             >
               {[
                 { 
@@ -99,14 +99,14 @@ const ContactSection = () => {
                     visible: { opacity: 1, y: 0 },
                   }}
                   transition={{ duration: 0.5 }}
-                  whileHover={{ scale: 1.1 }}
+                  whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="p-4 rounded-full border border-stone-300 text-stone-600 hover:text-stone-900 hover:border-stone-900 transition-colors flex flex-col items-center group"
+                  className="flex items-center space-x-2 px-4 py-3 rounded-full border border-stone-300 text-stone-600 hover:text-stone-900 hover:border-stone-900 transition-colors group w-full md:w-auto justify-center md:justify-start"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   {item.icon}
-                  <span className="text-xs mt-1 opacity-0 group-hover:opacity-70 transition-opacity">
-                    {item.label}
-                  </span>
+                  <span className="text-sm font-medium">{item.label}</span>
                 </motion.a>
               ))}
             </motion.div>
@@ -116,7 +116,7 @@ const ContactSection = () => {
           <div className="block md:hidden text-center mt-8">
             <p className="text-stone-500 mb-4">Prefer to email directly?</p>
             <a
-              href="mailto:violantajanalfredg@gmail.com"
+              href="mailto:violantajanalfred40@gmail.com"
               className="inline-block px-6 py-3 bg-stone-800 text-white rounded-full hover:bg-stone-700 transition-colors text-sm"
             >
               Send Email
