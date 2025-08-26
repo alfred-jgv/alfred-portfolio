@@ -39,7 +39,6 @@ const BlogsSection = () => {
       readTime: "4 min read",
       url: "https://dev.to/alfred_ajv/amazon-lightsail-instances-access-and-best-practices-c1"
     },
-    // Additional blogs to demonstrate horizontal scrolling
     {
       title: "Coming Soon",
       date: "September",
@@ -93,7 +92,7 @@ const BlogsSection = () => {
 
   const scroll = (direction) => {
     if (scrollContainerRef.current) {
-      const scrollAmount = 400; // Adjust scroll amount as needed
+      const scrollAmount = scrollContainerRef.current.clientWidth * 0.8; // Scroll by 80% of container width
       scrollContainerRef.current.scrollBy({
         left: direction === 'right' ? scrollAmount : -scrollAmount,
         behavior: 'smooth'
@@ -102,7 +101,7 @@ const BlogsSection = () => {
   };
 
   return (
-    <section id="blogs" className="min-h-screen py-12 sm:py-20 px-4 sm:px-6 bg-gradient-to-br from-stone-50 to-white relative overflow-hidden" ref={sectionRef}>
+    <section id="blogs" className="min-h-screen py-8 sm:py-20 px-4 sm:px-6 bg-gradient-to-br from-stone-50 to-white relative overflow-hidden" ref={sectionRef}>
       {/* Background decoration */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute top-32 left-4 sm:left-20 w-48 sm:w-72 h-48 sm:h-72 bg-amber-100 rounded-full opacity-20 blur-3xl animate-pulse"></div>
@@ -111,16 +110,16 @@ const BlogsSection = () => {
 
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <div className="text-center mb-12 sm:mb-16">
+        <div className="text-center mb-8 sm:mb-16">
           <div className="inline-flex items-center space-x-3 mb-4 sm:mb-6">
             <div className="w-6 sm:w-8 h-[1px] bg-stone-300"></div>
             <BookOpen size={20} className="text-stone-400" />
             <div className="w-6 sm:w-8 h-[1px] bg-stone-300"></div>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extralight tracking-wider text-stone-800 mb-3 sm:mb-4 px-4">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-extralight tracking-wider text-stone-800 mb-3 sm:mb-4 px-4">
             Latest Writings
           </h2>
-          <p className="text-stone-500 font-light max-w-2xl mx-auto text-sm sm:text-base px-4">
+          <p className="text-stone-500 font-light max-w-2xl mx-auto text-xs sm:text-base px-4">
             Technical insights, tutorials, and experiences from my development journey
           </p>
         </div>
@@ -131,7 +130,7 @@ const BlogsSection = () => {
           {showLeftArrow && (
             <button 
               onClick={() => scroll('left')}
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white/80 backdrop-blur-sm rounded-full p-2 shadow-lg hover:bg-white transition-all duration-200 -translate-x-1/2"
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 z-10 bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-lg hover:bg-white transition-all duration-200"
               aria-label="Scroll left"
             >
               <ChevronLeft size={24} className="text-stone-600" />
@@ -142,7 +141,7 @@ const BlogsSection = () => {
           {showRightArrow && (
             <button 
               onClick={() => scroll('right')}
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white/80 backdrop-blur-sm rounded-full p-2 shadow-lg hover:bg-white transition-all duration-200 translate-x-1/2"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 z-10 bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-lg hover:bg-white transition-all duration-200"
               aria-label="Scroll right"
             >
               <ChevronRight size={24} className="text-stone-600" />
@@ -152,15 +151,15 @@ const BlogsSection = () => {
           {/* Blogs Horizontal Scroll Container */}
           <div 
             ref={scrollContainerRef}
-            className="flex overflow-x-auto pb-6 -mx-4 px-4 scrollbar-hide scroll-smooth"
+            className="flex overflow-x-auto pb-6 scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
-            <div className="flex space-x-6">
+            <div className="flex space-x-4 sm:space-x-6 pl-4 sm:pl-0 pr-4">
               {blogs.map((blog, index) => (
                 <article 
                   key={index}
                   data-index={index}
-                  className={`group flex-shrink-0 w-80 sm:w-96 border border-stone-200 bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-sm hover:shadow-xl hover:border-stone-300 transition-all duration-500 overflow-hidden ${
+                  className={`group flex-shrink-0 w-[85vw] sm:w-96 border border-stone-200 bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-3xl p-5 sm:p-8 shadow-sm hover:shadow-lg hover:border-stone-300 transition-all duration-500 overflow-hidden snap-start ${
                     visibleBlogs.has(index) 
                       ? 'opacity-100 translate-y-0' 
                       : 'opacity-0 translate-y-8'
@@ -168,8 +167,8 @@ const BlogsSection = () => {
                 >
                   <div className="flex flex-col h-full">
                     <div className="flex-1">
-                      <div className="flex items-center flex-wrap gap-2 mb-3">
-                        <span className="text-xs text-stone-500 uppercase tracking-wider font-medium bg-stone-100 px-2.5 py-1 rounded-full">
+                      <div className="flex flex-col gap-2 mb-3">
+                        <span className="text-xs text-stone-500 uppercase tracking-wider font-medium bg-stone-100 px-2.5 py-1 rounded-full self-start">
                           {blog.category}
                         </span>
                         <div className="flex items-center space-x-4">
@@ -184,7 +183,7 @@ const BlogsSection = () => {
                         </div>
                       </div>
                       
-                      <h3 className="text-xl sm:text-2xl font-light mb-3 group-hover:text-stone-900 transition-colors duration-300 leading-tight line-clamp-2">
+                      <h3 className="text-lg sm:text-2xl font-light mb-3 group-hover:text-stone-900 transition-colors duration-300 leading-tight line-clamp-2">
                         {blog.title}
                       </h3>
                       
@@ -226,13 +225,13 @@ const BlogsSection = () => {
         </div>
 
         {/* Call to Action */}
-        <div className="text-center mt-12 sm:mt-16 px-4">
-          <p className="text-stone-500 mb-4 sm:mb-6 text-sm sm:text-base">Want to read more of my writings?</p>
+        <div className="text-center mt-8 sm:mt-16 px-4">
+          <p className="text-stone-500 mb-4 sm:mb-6 text-xs sm:text-base">Want to read more of my writings?</p>
           <a 
             href="https://dev.to/alfred_ajv"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center space-x-2 px-6 sm:px-8 py-3 bg-stone-800 text-white rounded-full hover:bg-stone-700 transition-colors duration-300 shadow-lg hover:shadow-xl text-sm sm:text-base"
+            className="inline-flex items-center space-x-2 px-5 sm:px-8 py-2.5 sm:py-3 bg-stone-800 text-white rounded-full hover:bg-stone-700 transition-colors duration-300 shadow-lg hover:shadow-xl text-xs sm:text-base"
           >
             <span>View All Articles on DEV.to</span>
             <ExternalLink size={16} />
