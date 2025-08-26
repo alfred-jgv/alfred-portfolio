@@ -1,35 +1,52 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState, useEffect } from 'react';
+import Navigation from './components/Navigation';
+import HeroSection from './components/HeroSection';
+import ExperienceSection from './components/ExperienceSection';
+import ProjectsSection from './components/ProjectsSection';
+import BlogsSection from './components/BlogsSection';
+import ContactSection from './components/ContactSection';
+import Footer from './components/Footer';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [activeSection, setActiveSection] = useState('about');
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
+  const scrollToSection = (sectionId) => {
+    setActiveSection(sectionId);
+    document.getElementById(sectionId)?.scrollIntoView({ 
+      behavior: 'smooth',
+      block: 'start' 
+    });
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div className="min-h-screen bg-stone-50 text-stone-900 font-light">
+      <Navigation 
+        activeSection={activeSection} 
+        scrollToSection={scrollToSection} 
+        isVisible={isVisible} 
+      />
+      
+      <HeroSection 
+        scrollToSection={scrollToSection} 
+        isVisible={isVisible} 
+      />
+      
+      <ExperienceSection />
+      
+      <ProjectsSection />
+      
+      <BlogsSection />
+      
+      <ContactSection />
+      
+      <Footer />
+    </div>
+  );
+};
 
-export default App
+export default App;
