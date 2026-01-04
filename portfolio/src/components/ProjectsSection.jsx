@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { ExternalLink, Folder, Cloud, Smartphone, Globe, Database, ShoppingCart, FileText, CheckSquare, Github } from 'lucide-react';
+import { ExternalLink, Folder, Cloud, Smartphone, Globe, Database, ShoppingCart, FileText, CheckSquare, Github, Server, Loader, Cpu, Brain } from 'lucide-react';
 
 const ProjectsSection = () => {
   const [activeFilter, setActiveFilter] = useState('all');
@@ -8,12 +8,22 @@ const ProjectsSection = () => {
 
   const projects = [
     {
+      title: "Cloud Load Balancing Simulation System",
+      description: "Advanced load balancing simulator implementing Particle Swarm Optimization (PSO) and Ant Colony Optimization (ACO) algorithms for intelligent workload distribution based on Google cluster traces.",
+      longDescription: "A research-grade simulation platform that demonstrates advanced metaheuristic algorithms for cloud load balancing. Implements Particle Swarm Optimization (PSO) and Ant Colony Optimization (ACO) to optimize server resource allocation using real Google cluster workload data. Features include real-time algorithm performance comparison, dynamic workload distribution visualization, server health monitoring, and comprehensive performance metrics analysis.",
+      tech: ["React", "Tailwind CSS", "JavaScript", "PSO Algorithm", "ACO Algorithm", "Load Balancing Concepts"],
+      categories: ["cloud", "web"],
+      icon: Cpu,
+      featured: true,
+      status: "COMPLETED",
+      github: "https://github.com/Thesis-It-PLSE1117/Final-Thesis-System-Repo"
+    },
+    {
       title: "Self-Destructing File Uploader",
       description: "Serverless file handling system with intelligent automatic cleanup. Features secure upload endpoints, time-based file deletion, and comprehensive error handling using modern AWS architecture patterns.",
       longDescription: "A sophisticated cloud-native solution that demonstrates advanced serverless patterns. Implements secure file upload workflows with automatic cleanup mechanisms, featuring JWT authentication, presigned URLs, and Lambda-based processing pipelines.",
-      tech: ["AWS Lambda", "React", "S3", "API Gateway", "CloudFormation"],
-      category: "Cloud Solution",
-      type: "cloud",
+      tech: ["React", "Tailwind CSS", "AWS Lambda", "S3", "API Gateway"],
+      categories: ["cloud", "web"],
       icon: Cloud,
       featured: true,
       status: "COMPLETED",
@@ -23,10 +33,9 @@ const ProjectsSection = () => {
       title: "Accessible Menu with AI Integration",
       description: "Revolutionary accessibility-first dining application integrating Amazon Transcribe for voice commands and Polly for audio feedback, making restaurant menus universally accessible.",
       longDescription: "An innovative React application that breaks down accessibility barriers in dining experiences. Features real-time voice recognition, text-to-speech capabilities, and adaptive UI components designed for users with visual or motor impairments.",
-      tech: ["React", "Amazon Transcribe", "Polly", "Accessibility APIs", "AWS SDK"],
-      category: "AI/ML Integration",
-      type: "ai",
-      icon: Globe,
+      tech: ["React", "Tailwind CSS", "Amazon Transcribe", "Polly", "AWS SDK"],
+      categories: ["ai", "web", "cloud"],
+      icon: Brain,
       featured: true,
       status: "COMPLETED",
       github: "https://github.com/alfred-jgv/accessibility-menu-proj"
@@ -35,11 +44,10 @@ const ProjectsSection = () => {
       title: "Campus Cavern E-Commerce",
       description: "Comprehensive e-commerce platform specifically designed for educational institutions. Enables campus organizations to create digital storefronts and sell branded merchandise to students, faculty, and alumni.",
       longDescription: "A full-featured marketplace built for the unique needs of campus communities. Features multi-vendor capabilities, organization-specific storefronts, integrated payment processing, and robust inventory management tailored for educational environments.",
-      tech: ["React", "Tailwind CSS", "Vite", "Bootstrap", "Payment APIs"],
-      category: "Web Application",
-      type: "web",
+      tech: ["React", "Tailwind CSS", "Vite", "Bootstrap"],
+      categories: ["web"],
       icon: ShoppingCart,
-      featured: true,
+      featured: false,
       status: "COMPLETED",
       github: "https://github.com/alfred-jgv/campus-cavern",
       teamSize: "CSA-7 Development Team"
@@ -49,8 +57,7 @@ const ProjectsSection = () => {
       description: "Full-featured Android application for pastry shop management built with Kotlin. Implements comprehensive CRUD operations with real-time Firebase Firestore integration and secure user authentication.",
       longDescription: "A production-quality Android app showcasing modern mobile development practices. Features real-time database synchronization, offline capability, user authentication flows, and intuitive material design components for seamless inventory management.",
       tech: ["Kotlin", "Android Studio", "Firebase Firestore", "Firebase Auth", "Material Design"],
-      category: "Mobile Application",
-      type: "mobile",
+      categories: ["mobile"],
       icon: Smartphone,
       featured: false,
       status: "Learning Project",
@@ -61,8 +68,7 @@ const ProjectsSection = () => {
       description: "Personal productivity Android application featuring dual-mode functionality for both traditional notes and interactive checklists. Built with SQLite for reliable offline data persistence.",
       longDescription: "A thoughtfully designed productivity app that combines note-taking with task management. Features advanced search capabilities, local data encryption, and an intuitive UI that adapts to different content types while maintaining optimal performance.",
       tech: ["Kotlin", "Android Studio", "SQLite", "Material Components", "Room Database"],
-      category: "Mobile Application", 
-      type: "mobile",
+      categories: ["mobile"],
       icon: CheckSquare,
       featured: false,
       status: "Personal Project",
@@ -72,15 +78,15 @@ const ProjectsSection = () => {
 
   const categories = [
     { id: 'all', label: 'All Projects', count: projects.length },
-    { id: 'cloud', label: 'Cloud Solutions', count: projects.filter(p => p.type === 'cloud').length },
-    { id: 'mobile', label: 'Mobile Apps', count: projects.filter(p => p.type === 'mobile').length },
-    { id: 'web', label: 'Web Applications', count: projects.filter(p => p.type === 'web').length },
-    { id: 'ai', label: 'AI Integration', count: projects.filter(p => p.type === 'ai').length }
+    { id: 'cloud', label: 'Cloud Solutions', count: projects.filter(p => p.categories.includes('cloud')).length },
+    { id: 'mobile', label: 'Mobile Apps', count: projects.filter(p => p.categories.includes('mobile')).length },
+    { id: 'web', label: 'Web Applications', count: projects.filter(p => p.categories.includes('web')).length },
+    { id: 'ai', label: 'AI Integration', count: projects.filter(p => p.categories.includes('ai')).length }
   ];
 
   const filteredProjects = activeFilter === 'all' 
     ? projects 
-    : projects.filter(project => project.type === activeFilter);
+    : projects.filter(project => project.categories.includes(activeFilter));
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -102,6 +108,17 @@ const ProjectsSection = () => {
 
     return () => observer.disconnect();
   }, [filteredProjects]);
+
+  // Helper function to display categories
+  const getCategoryLabels = (categories) => {
+    const labels = {
+      'cloud': 'Cloud Solution',
+      'web': 'Web Application',
+      'mobile': 'Mobile App',
+      'ai': 'AI Integration'
+    };
+    return categories.map(cat => labels[cat]).join(' • ');
+  };
 
   return (
     <section id="projects" className="min-h-screen py-12 sm:py-20 px-4 sm:px-6 bg-gradient-to-br from-stone-50 to-white relative overflow-hidden" ref={sectionRef}>
@@ -167,7 +184,7 @@ const ProjectsSection = () => {
                     const originalIndex = projects.findIndex(p => p.title === project.title);
                     return (
                       <div 
-                        key={`${project.title}-${activeFilter}`}
+                        key={`${project.title}-${activeFilter}-${index}`}
                         data-index={originalIndex}
                         className={`group relative transition-all duration-700 ease-out ${
                           visibleProjects.has(originalIndex) 
@@ -193,7 +210,7 @@ const ProjectsSection = () => {
                               </div>
                               <div className="min-w-0 flex-1">
                                 <span className="text-xs text-stone-500 font-medium uppercase tracking-wider block truncate">
-                                  {project.category}
+                                  {getCategoryLabels(project.categories)}
                                 </span>
                                 <div className="flex items-center space-x-2 mt-1">
                                   <span className={`text-xs px-2 py-1 rounded-full whitespace-nowrap ${
@@ -268,7 +285,7 @@ const ProjectsSection = () => {
                     const originalIndex = projects.findIndex(p => p.title === project.title);
                     return (
                       <div 
-                        key={`${project.title}-${activeFilter}`}
+                        key={`${project.title}-${activeFilter}-${index}`}
                         data-index={originalIndex}
                         className={`group relative transition-all duration-700 ease-out ${
                           visibleProjects.has(originalIndex) 
@@ -287,7 +304,7 @@ const ProjectsSection = () => {
                               </div>
                               <div className="min-w-0 flex-1">
                                 <span className="text-xs text-stone-500 font-medium uppercase tracking-wider block truncate">
-                                  {project.category}
+                                  {getCategoryLabels(project.categories)}
                                 </span>
                                 <div className="flex items-center space-x-2 mt-1">
                                   <span className={`text-xs px-2 py-1 rounded-full whitespace-nowrap ${
